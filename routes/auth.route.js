@@ -8,13 +8,20 @@ router.post('/login', authController.login)
 // SIGNUP ROUTE
 router.post('/signup', authController.signup)
 
-// CONFIRM MAIL
+// CONFIRM MAIL ROUTE
 router.post('/confirm-mail', authController.confirmMail)
 
-// VERIFY CONFIRM MAIL PIN
+// VERIFY CONFIRM MAIL PIN ROUTE
 router.post('/verify-confirm-mail-pin', authController.verifyConfirmMailPin)
 
-// Forget Password Route - Send PIN to user mail id
-// router.post('/forget-password', authController.forgetPassword)
+// FORGET PASSWORD ROUTE 
+router.post('/forget-password', authController.forgetPassword)
+
+// VERIFY RESET PIN
+router.post('/verify-reset-pin', authController.verifyResetPin)
+
+// RESET PASSWORD
+router.post('/reset-password', authController.resetPassword)
+
 
 module.exports = router
