@@ -5,11 +5,14 @@ const authController = require('../controllers/auth.controller')
 // LOGIN ROUTE
 router.post('/login', authController.login)
 
-// Signup Route
+// SIGNUP ROUTE
 router.post('/signup', authController.signup)
 
-// Confirm Mail Route
-// router.post('/confirm-mail', authController.confirmMail)
+// CONFIRM MAIL
+router.post('/confirm-mail', authController.confirmMail)
+
+// VERIFY CONFIRM MAIL PIN
+router.post('/verify-confirm-mail-pin', authController.verifyConfirmMailPin)
 
 // Forget Password Route - Send PIN to user mail id
 // router.post('/forget-password', authController.forgetPassword)
