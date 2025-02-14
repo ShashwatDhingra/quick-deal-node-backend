@@ -2,7 +2,7 @@ const userModel = require('../models/user.model');
 const emailVerificationModel = require('../models/emailVerification.model')
 const { getResponse, log, getInternalErrorResponse } = require('../utils/utils');
 const authUtils = require('../utils/auth.utils');
-const utils = require('../utils/utils');
+const bcrypt = require('bcrypt')
 
 class AuthService{
 
@@ -58,7 +58,7 @@ class AuthService{
             const user = await emailVerificationModel.findOne({ email });
 
             if (!user) {
-                return getResponse(404, false, "User doesn't exist", null, "User doesn't exist")
+                return getResponse(404, false, "Please request for Otp first.", null, "User doesn't exist")
             }
 
             if (pin != user.pin) {
@@ -79,7 +79,7 @@ class AuthService{
     }
 
     // SIGNUP SERVICE
-    async signup(){
+    async signup(name, email, password){
         try{
             // Check if the user already exists
             const existingUser = await userModel.findOne({email});
@@ -89,13 +89,13 @@ class AuthService{
             }
 
              // Create a new user instance
-             const user = new userModel({ username, email, password });
+             const user = new userModel({ name, email, password });
 
              // Save the user to the database
              const result = await user.save();
  
              // Generate a JWT Token
-             const token = authUtils.generateJWT(user.username, user.email);
+             const token = authUtils.generateJWT(user.name, user.email);
  
              if (result && token) {
                  console.log('--- accounted created ---');
@@ -132,7 +132,7 @@ class AuthService{
             }
 
             // Generate a JWT Token
-            const token = authUtils.generateJWT(user.username, user.email);
+            const token = authUtils.generateJWT(user.name, user.email);
 
             return getResponse(200, true, 'Login Successfully', {"token" : token})
         } catch (e) {

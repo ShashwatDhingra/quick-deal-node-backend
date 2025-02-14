@@ -47,18 +47,18 @@ class AuthController{
     // SIGNUP CONTROLLER
     async signup(req, res){
         try{
-        const { username, email, password } = req.body;
+        const { name, email, password } = req.body;
 
         // Check if field is null
-        if (!username) {
-            return sendResponse(res, getRequiredResponse('username'))
+        if (!name) {
+            return sendResponse(res, getRequiredResponse('name'))
         } else if (!email) {
             return sendResponse(res, getRequiredResponse('email'))
         } else if (!password) {
             return sendResponse(res, getRequiredResponse('password'))
         }
 
-        const response = await authService.signup(username, email, password);
+        const response = await authService.signup(name, email, password);
 
         return sendResponse(res, response);
 
