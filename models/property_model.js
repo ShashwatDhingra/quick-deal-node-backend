@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const db = require('../config/db')
+
 const propertySchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String },
@@ -38,4 +40,4 @@ const propertySchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Property", propertySchema);
+module.exports = db.model("Property", propertySchema);

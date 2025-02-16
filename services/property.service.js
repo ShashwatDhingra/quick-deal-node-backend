@@ -5,6 +5,7 @@ class PropertyServices {
   async addProperty(propertyData) {
     try {
       const newProperty = new propertyModel(propertyData);
+      
 
       await newProperty.save();
 
