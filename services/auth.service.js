@@ -58,7 +58,7 @@ class AuthService{
             const user = await emailVerificationModel.findOne({ email });
 
             if (!user) {
-                return getResponse(404, false, "Please request for Otp first.", null, "User doesn't exist")
+                return getResponse(401, false, "Please request for Otp first.", null, "User doesn't exist")
             }
 
             if (pin != user.pin) {
@@ -120,7 +120,7 @@ class AuthService{
             const user = await userModel.findOne({ email });
 
             if (!user) {
-                return getResponse(404, false, 'User doesnt exists with this email id', null, 'User doesnt exists with this email id')
+                return getResponse(401, false, 'User doesnt exists with this email id', null, 'User doesnt exists with this email id')
             }
 
             // decrypt the password and compare the entered password with the hashed password stored in the database
@@ -148,7 +148,7 @@ class AuthService{
             const user = await userModel.findOne({ email });
 
             if (!user) {
-                return getResponse(404, false, 'User doesnt exists with this email id', null, 'User doesnt exists with this email id')
+                return getResponse(401, false, 'User doesnt exists with this email id', null, 'User doesnt exists with this email id')
             }
 
             const generatePin = authUtils.pinGenerator();
@@ -176,7 +176,7 @@ class AuthService{
             let user = await userModel.findOne({ email });
             
             if (!user) {
-                return getResponse(404, false, 'User doesnt exists with this email id', null, 'User doesnt exists with this email id')
+                return getResponse(401, false, 'User doesnt exists with this email id', null, 'User doesnt exists with this email id')
             }
             
             const isValid = await userModel.findOne({ email, resetPin: pin, resetPinExpiration: { $gt: Date.now() } })  // another way to verify the pin weather it expire, using $gt i.e. query operator
@@ -197,7 +197,7 @@ class AuthService{
             const user = await userModel.findOne({ email });
 
             if (!user) {
-                return getResponse(404, false, 'User doesnt exists with this email id', null, 'User doesnt exists with this email id')
+                return getResponse(401, false, 'User doesnt exists with this email id', null, 'User doesnt exists with this email id')
             }
     
             user.password = password;
