@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 
 class AuthUtil {
 
-    generateJWT(username, email){
-        return jwt.sign({ username, email}, process.env.JWT_KEY);
+    generateJWT(data){
+        return jwt.sign(data, process.env.JWT_KEY);
     }
 
     async sendMail(to, subject, text) {

@@ -95,7 +95,7 @@ class AuthService{
              const result = await user.save();
  
              // Generate a JWT Token
-             const token = authUtils.generateJWT(user.name, user.email);
+             const token = authUtils.generateJWT({'name': user.name, 'email': user.email, 'role': user.role});
  
              if (result && token) {
                  console.log('--- accounted created ---');
@@ -132,7 +132,7 @@ class AuthService{
             }
 
             // Generate a JWT Token
-            const token = authUtils.generateJWT(user.name, user.email);
+            const token = authUtils.generateJWT({'name': user.name, 'email': user.email, 'role': user.role});
 
             return getResponse(200, true, 'Login Successfully', {"token" : token})
         } catch (e) {
