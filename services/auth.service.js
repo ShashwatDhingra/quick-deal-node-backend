@@ -9,9 +9,7 @@ class AuthService{
     // ---- SIGNUP AUTH SERVICES STARTED----
 
     // CONFIRM MAIL SERVICE
-    async confirmMail(
-        
-    ){
+    async confirmMail(email){
         try{
             let isUser = await userModel.findOne({email});
 
