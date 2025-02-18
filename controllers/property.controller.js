@@ -23,13 +23,17 @@ class PropertyController {
       // Location validation
       if (!location) {
         return sendResponse(res, getRequiredResponse("location"));
-      }  if (!location.address) {
+      }
+      if (!location.address) {
         return sendResponse(res, getRequiredResponse("address"));
-      }  if (!location.city) {
+      }
+      if (!location.city) {
         return sendResponse(res, getRequiredResponse("city"));
-      }  if (!location.state) {
+      }
+      if (!location.state) {
         return sendResponse(res, getRequiredResponse("state"));
-      }  if (!location.pincode) {
+      }
+      if (!location.pincode) {
         return sendResponse(res, getRequiredResponse("pincode"));
       }
       // Coordinates validation
@@ -48,6 +52,35 @@ class PropertyController {
         res,
         getInternalErrorResponse(
           e.message || "An error occurred while adding property"
+        )
+      );
+    }
+  }
+
+  // Update status
+  async updateProperty(req, res) {
+    try {
+      const { id, ...updateData } = req.body;
+      if (!id) {
+        return sendResponse(res, getRequiredResponse("id"));
+      }
+
+      for (const key in updateData) {
+        if (updateData.hasOwnProperty(key)) {
+          if (!updateData[key] || updateData[key].toString().trim() === "") {
+            return sendResponse(res, getRequiredResponse(`${key}`));
+          }
+        }
+      }
+
+      const response = await propertyServices.updateProperty(id, updateData);
+
+      return sendResponse(res, response);
+    } catch (e) {
+      return sendResponse(
+        res,
+        getInternalErrorResponse(
+          e.message || "An error occurred while updating property"
         )
       );
     }

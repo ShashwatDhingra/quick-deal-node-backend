@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-const db = require('../config/db')
-
+const db = require("../config/db");
+const followupSchema = require("./followup.model");
+const { currentTime } = require("../utils/utils");
 const propertySchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String },
@@ -16,6 +17,7 @@ const propertySchema = new mongoose.Schema({
       lng: { type: Number },
     },
   },
+  followup: [followupSchema],
   status: { type: String, default: "draft" },
   area: { type: String },
   furnishing: { type: String },
@@ -36,8 +38,20 @@ const propertySchema = new mongoose.Schema({
   facingDirection: { type: String },
   legalClearance: { type: Boolean, default: false },
   availableFrom: { type: Date },
-  createdAt: { type: Date, default: Date.now },
+  createdAt: {
+    type: Date,
+  },
   updatedAt: { type: Date, default: Date.now },
+});
+
+propertySchema.pre("updateOne", function (next) {
+  this.set({ updatedAt: currentTime() }); 
+  next();
+});
+
+propertySchema.pre("findOneAndUpdate", function (next) {
+  this.set({ updatedAt: new Date(Date.now() + 5.5 * 60 * 60 * 1000) }); // Add 5 hours and 30 minutes
+  next();
 });
 
 module.exports = db.model("Property", propertySchema);
