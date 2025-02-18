@@ -40,17 +40,13 @@ const propertySchema = new mongoose.Schema({
   availableFrom: { type: Date },
   createdAt: {
     type: Date,
+    default: currentTime(),
   },
-  updatedAt: { type: Date, default: Date.now },
-});
-
-propertySchema.pre("updateOne", function (next) {
-  this.set({ updatedAt: currentTime() }); 
-  next();
+  updatedAt: { type: Date, default: currentTime() },
 });
 
 propertySchema.pre("findOneAndUpdate", function (next) {
-  this.set({ updatedAt: new Date(Date.now() + 5.5 * 60 * 60 * 1000) }); // Add 5 hours and 30 minutes
+  this.set({ updatedAt: currentTime() });
   next();
 });
 
