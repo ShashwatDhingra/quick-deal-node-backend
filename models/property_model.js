@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const db = require("../config/db");
-const followupSchema = require("./followup.model");
+
 const { currentTime } = require("../utils/utils");
 const propertySchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -17,7 +17,7 @@ const propertySchema = new mongoose.Schema({
       lng: { type: Number },
     },
   },
-  followup: [followupSchema],
+
   status: { type: String, default: "draft" },
   area: { type: String },
   furnishing: { type: String },
@@ -45,9 +45,14 @@ const propertySchema = new mongoose.Schema({
   updatedAt: { type: Date, default: currentTime() },
 });
 
-propertySchema.pre("findOneAndUpdate", function (next) {
-  this.set({ updatedAt: currentTime() });
-  next();
-});
+propertySchema.statics.findByName = function (title) {
+  return this.find({ title: new RegExp(`.*${title}.*`, "i") });
+};
+
+propertySchema.statics.findByName = function (title) {
+  return this.find({ title: { $regex: `.*${title}.*`, $options: "i" } });
+};
+
+// Middleware to enforce required fields during updates for followup array
 
 module.exports = db.model("Property", propertySchema);

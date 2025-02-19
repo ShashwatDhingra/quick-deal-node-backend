@@ -1,5 +1,9 @@
 const propertyModel = require("../models/property_model");
-const { getResponse, getInternalErrorResponse } = require("../utils/utils");
+const {
+  getResponse,
+  getInternalErrorResponse,
+  log,
+} = require("../utils/utils");
 
 class PropertyServices {
   async addProperty(propertyData) {
@@ -35,6 +39,58 @@ class PropertyServices {
         updatedProperty
       );
     } catch (e) {
+      // Return error response
+      return getInternalErrorResponse(e.message || "An error occurred");
+    }
+  }
+
+  // fetch property
+  async fetchProperty(page, limit, filters) {
+    try {
+      const query = {};
+
+      if (filters) {
+        console.log(`service property from ${JSON.stringify(filters)}`);
+        for (const key in filters["filters"]) {
+          if (typeof filters[key] === "string") {
+            filters["filters"] = {
+              $regex: filters["filters"][key],
+              $options: "i",
+            };
+          }
+        }
+      }
+
+      if (page < 1 || limit < 1) {
+        return getResponse(
+          400,
+          false,
+          "Page and limit must be positive integers"
+        );
+      }
+
+      log(filters["filters"]);
+
+      const properties = await propertyModel
+        .find(filters["filters"])
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .sort({ createdAt: -1 });
+
+      if (properties.length === 0) {
+        return getResponse(404, false, "No properties found");
+      }
+
+      return getResponse(
+        200,
+        true,
+        "Properties fetched successfully",
+        properties
+      );
+    } catch (e) {
+      // Log the error for debugging purposes
+      console.error("Error fetching properties:", e);
+
       // Return error response
       return getInternalErrorResponse(e.message || "An error occurred");
     }

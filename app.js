@@ -11,6 +11,7 @@ const { log } = require("./utils/utils");
 // Routes Import
 const authRoute = require("./routes/auth.route");
 const propertyRoute = require("./routes/property.route");
+const followupRoute = require("./routes/followup.route");
 
 const app = express();
 app.use(bodyParser.json());
@@ -22,5 +23,7 @@ const baseUrl = "/api/v1";
 app.use(`${baseUrl}/auth`, authRoute);
 
 app.use(`${baseUrl}`, propertyRoute);
+
+app.use(`${baseUrl}`, followupRoute);
 
 module.exports = app;

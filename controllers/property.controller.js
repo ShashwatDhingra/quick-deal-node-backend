@@ -21,9 +21,9 @@ class PropertyController {
         return sendResponse(res, getRequiredResponse("price"));
       }
       // Location validation
-      if (!location) {
-        return sendResponse(res, getRequiredResponse("location"));
-      }
+      // if (!location) {
+      //   return sendResponse(res, getRequiredResponse("location"));
+      // }
       if (!location.address) {
         return sendResponse(res, getRequiredResponse("address"));
       }
@@ -65,14 +65,6 @@ class PropertyController {
         return sendResponse(res, getRequiredResponse("id"));
       }
 
-      for (const key in updateData) {
-        if (updateData.hasOwnProperty(key)) {
-          if (!updateData[key] || updateData[key].toString().trim() === "") {
-            return sendResponse(res, getRequiredResponse(`${key}`));
-          }
-        }
-      }
-
       const response = await propertyServices.updateProperty(id, updateData);
 
       return sendResponse(res, response);
@@ -81,6 +73,29 @@ class PropertyController {
         res,
         getInternalErrorResponse(
           e.message || "An error occurred while updating property"
+        )
+      );
+    }
+  }
+
+  // fetch property
+  async fetchProperty(req, res) {
+    try {
+      // Pagination and filtering parameters
+      const { page, limit, ...filters } = req.query;
+      
+      const response = await propertyServices.fetchProperty(
+        page,
+        limit,
+        filters
+      );
+
+      return sendResponse(res, response);
+    } catch (e) {
+      return sendResponse(
+        res,
+        getInternalErrorResponse(
+          e.message || "An error occurred while fetching property"
         )
       );
     }
