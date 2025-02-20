@@ -8,7 +8,7 @@ const {
 const propertyServices = require("../services/property.service");
 class PropertyController {
   // Create a new Property
-  async addProperty(req, res) {
+    async addProperty(req, res) {
     try {
       const { title, category, price, location } = req.body;
       if (!title) {

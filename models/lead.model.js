@@ -1,38 +1,50 @@
 const mongoose = require("mongoose");
 const db = require("../config/db");
-
+const { currentTime } = require("../utils/utils");
+const { MAX } = require("uuid");
 const leadSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
   phone: {
-    type: String,
+    type: Number,
     required: true,
+    min: 1000000000,
+    max: 9999999999,
+    unique: true,
+    validate: {
+      validator: (v) => /^[6-9]\d{9}$/.test(v),
+      message: "Invalid phone number",
+    },
+   
   },
   email: {
     type: String,
-    required: true,
+    unique: true,
+    validate: {
+      validator: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+      message: "Invalid email address",
+    },
+    // required: true,
   },
   interestedProperties: [
     {
       type: String,
-      // ref: 'Property' // Assuming you have a Property model
     },
   ],
   assignedTo: {
     type: String,
-    // ref: 'Employee' // Assuming you have an Employee model
   },
   source: {
     type: String,
-    //  enum: ['website', 'referral', 'walk-in', 'other'],
-    required: true,
+    enum: ["mobile", "referral", "walk-in", "other"],
+    default: "mobile",
   },
   status: {
     type: String,
-    // enum: ['new', 'contacted', 'interested', 'not_interested'],
-    default: "new",
+    enum: ["draft", "contacted", "interested", "not_interested"],
+    default: "draft",
   },
   remarks: {
     type: String,

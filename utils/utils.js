@@ -74,6 +74,17 @@ const utils = {
     };
   },
 
+  // Create 404 response object
+  getNotFoundResponse: function (message = "Not Found") {
+    return {
+      statusCode: 404,
+      success: false,
+      message,
+      data: null,
+      error: message,
+    };
+  },
+
   // use for get cuurent time with add 5:30Minutes
   currentTime: function getDateWithOffset() {
     return new Date(Date.now() + 5.5 * 60 * 60 * 1000);

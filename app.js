@@ -10,9 +10,8 @@ const { log } = require("./utils/utils");
 
 // Routes Import
 const authRoute = require("./routes/auth.route");
-const propertyRoute = require("./routes/property.route");
-const followupRoute = require("./routes/followup.route");
-
+const dynamicRoute = require("./routes/dynamic.route");
+// const followupRoute = require("./routes/followup.route");
 const app = express();
 app.use(bodyParser.json());
 app.use(morgan("dev")); // For API Response logs.
@@ -22,8 +21,8 @@ app.use(cors());
 const baseUrl = "/api/v1";
 app.use(`${baseUrl}/auth`, authRoute);
 
-app.use(`${baseUrl}`, propertyRoute);
+app.use(`${baseUrl}`, dynamicRoute);
 
-app.use(`${baseUrl}`, followupRoute);
+// app.use(`${baseUrl}`, followupRoute);
 
 module.exports = app;
