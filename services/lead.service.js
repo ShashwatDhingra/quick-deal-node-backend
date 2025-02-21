@@ -50,7 +50,30 @@ class LeadServices {
         );
       }
 
-      //   log(filters["filters"]);
+      if (filters["filters"]) {
+        Object.keys(filters["filters"]).forEach((key) => {
+          let value = filters["filters"][key];
+
+          if (typeof value === "object" && value !== null) {
+            Object.keys(value).forEach((operator) => {
+              if (
+                ["gte", "lte", "gt", "lt"].includes(operator) &&
+                !isNaN(Date.parse(value[operator]))
+              ) {
+                value[`$${operator}`] = new Date(value[operator]);
+                console.error(`Error fetching Lead:${value[`$${operator}`]}`);
+                delete value[operator];
+              }
+            });
+          } else if (typeof value === "string" && !isNaN(Date.parse(value))) {
+            filters["filters"][key] = new Date(value);
+          } else if (typeof value === "string") {
+            filters["filters"][key] = { $regex: value, $options: "i" };
+          } else if (typeof value === "number") {
+            filters["filters"][key] = { $eq: value };
+          }
+        });
+      }
 
       const lead = await leadModel
         .find(filters["filters"])
@@ -64,10 +87,7 @@ class LeadServices {
 
       return getResponse(200, true, "Lead fetched successfully", lead);
     } catch (e) {
-      // Log the error for debugging purposes
       console.error("Error fetching Lead:", e);
-
-      // Return error response
       return getInternalErrorResponse(e.message || "An error occurred");
     }
   }

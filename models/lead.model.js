@@ -51,6 +51,7 @@ const leadSchema = new mongoose.Schema({
   },
   followUpDate: {
     type: Date,
+    
     default: currentTime(),
   },
   createdAt: {
