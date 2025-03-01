@@ -28,27 +28,40 @@ const leadSchema = new mongoose.Schema({
     // required: true,
   },
 
-  assignedTo: {
+  assigned: {
     type: String,
   },
-  source: {
+  propertytype: {
     type: String,
-    enum: ["mobile", "referral", "walk-in", "other"],
-    default: "mobile",
+    required: true,
+   
+    enum: [
+      "Commercial",
+      "Office",
+      "Shop",
+      "Residential",
+      "Apartment",
+      "Studio",
+      "Villa",
+    ],
+    default: "Apartment",
+  },
+  leadstatus: {
+    type: String,
+    
+    enum: ["draft", "contacted", "interested", "not_interested"],
+    default: "draft",
   },
   status: {
     type: String,
-    enum: ["draft", "contacted", "interested", "not_interested"],
-    default: "draft",
+    required: true,
+    enum: ["Rent", "Sale"],
+    default: "Sale",
   },
   remarks: {
     type: String,
   },
-  followUpDate: {
-    type: Date,
 
-    default: currentTime(),
-  },
   createdAt: {
     type: Date,
     default: currentTime(),
