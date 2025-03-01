@@ -17,7 +17,6 @@ const leadSchema = new mongoose.Schema({
       validator: (v) => /^[6-9]\d{9}$/.test(v),
       message: "Invalid phone number",
     },
-   
   },
   email: {
     type: String,
@@ -28,11 +27,7 @@ const leadSchema = new mongoose.Schema({
     },
     // required: true,
   },
-  interestedProperties: [
-    {
-      type: String,
-    },
-  ],
+
   assignedTo: {
     type: String,
   },
@@ -51,7 +46,7 @@ const leadSchema = new mongoose.Schema({
   },
   followUpDate: {
     type: Date,
-    
+
     default: currentTime(),
   },
   createdAt: {

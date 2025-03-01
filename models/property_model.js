@@ -17,7 +17,6 @@ const propertySchema = new mongoose.Schema({
       lng: { type: Number },
     },
   },
-
   status: { type: String, default: "draft" },
   area: { type: String },
   furnishing: { type: String },
