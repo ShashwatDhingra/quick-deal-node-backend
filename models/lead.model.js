@@ -34,7 +34,7 @@ const leadSchema = new mongoose.Schema({
   propertytype: {
     type: String,
     required: true,
-   
+
     enum: [
       "Commercial",
       "Office",
@@ -48,9 +48,9 @@ const leadSchema = new mongoose.Schema({
   },
   leadstatus: {
     type: String,
-    
-    enum: ["draft", "contacted", "interested", "not_interested"],
-    default: "draft",
+
+    enum: ["Draft", "Contacted", "Interested", "Not interested"],
+    default: "Draft",
   },
   status: {
     type: String,

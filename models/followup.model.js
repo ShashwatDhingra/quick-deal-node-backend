@@ -9,17 +9,14 @@ const followupSchema = mongoose.Schema({
   // status: { type: String },
   comments: { type: String },
   priority: { type: String, required: true }, // enum: ["High", "Medium", "Low"]
-  followUpType: { type: String }, // enum: ["Email", "Call", "Meeting"]
+  // followUpType: { type: String }, // enum: ["Email", "Call", "Meeting"]
   // relatedTo: { type: mongoose.Schema.Types.ObjectId, ref: "Lead" },
-  reminder: { type: Boolean, default: false },
+  reminder: { type: Boolean, default: true },
   reminderDate: { type: Date, required: true },
   completed: { type: Boolean, default: false },
   createdAt: { type: Date, default: currentTime() },
   updatedAt: { type: Date, default: currentTime() },
 });
-
-
-
 
 followupSchema.pre("findOneAndUpdate", function (next) {
   this.set({ updatedAt: currentTime() });
