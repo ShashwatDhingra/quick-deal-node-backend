@@ -77,10 +77,6 @@ class PropertyServices {
         .limit(limit)
         .sort({ createdAt: -1 });
 
-      if (properties.length === 0) {
-        return getResponse(404, false, "No properties found");
-      }
-
       return getResponse(
         200,
         true,

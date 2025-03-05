@@ -81,10 +81,6 @@ class LeadServices {
         .limit(limit)
         .sort({ createdAt: -1 });
 
-      if (lead.length === 0) {
-        return getResponse(404, false, "No Lead found");
-      }
-
       return getResponse(200, true, "Lead fetched successfully", lead);
     } catch (e) {
       console.error("Error fetching Lead:", e);

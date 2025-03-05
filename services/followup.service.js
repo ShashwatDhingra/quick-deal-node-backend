@@ -58,14 +58,10 @@ class FollowupServices {
     //   log(filters["filters"]);
 
       const followup = await followupModel
-        .find(filters["filters"])
+        .find(filters["filters"])  
         .skip((page - 1) * limit)
         .limit(limit)
         .sort({ createdAt: -1 });
-
-      if (followup.length === 0) {
-        return getResponse(404, false, "No followup found");
-      }
 
       return getResponse(
         200,
