@@ -11,31 +11,22 @@ class FollowupController {
   async addFollowup(req, res) {
     try {
       const {
+        name,
+        phone,
         followUpBy,
         property,
-        comments,
-        priority,
-        followUpType,
-        reminderDate,
       } = req.body;
+      if (!name) {
+        return sendResponse(res, getRequiredResponse("name"));
+      }
+      if (!phone) {
+        return sendResponse(res, getRequiredResponse("phone"));
+      }
       if (!followUpBy) {
         return sendResponse(res, getRequiredResponse("followUpBy"));
       }
       if (!property) {
         return sendResponse(res, getRequiredResponse("property"));
-      }
-      if (!comments) {
-        return sendResponse(res, getRequiredResponse("prcommentsice"));
-      }
-      if (!priority) {
-        return sendResponse(res, getRequiredResponse("priority"));
-      }
-
-      if (!followUpType) {
-        return sendResponse(res, getRequiredResponse("followUpType"));
-      }
-      if (!reminderDate) {
-        return sendResponse(res, getRequiredResponse("reminderDate"));
       }
 
       const response = await followupServices.addFollowup(req.body);
