@@ -35,8 +35,19 @@ const propertySchema = new mongoose.Schema({
   maintenanceCost: { type: Number },
   nearestLandmark: { type: String },
   facingDirection: { type: String },
+  wishlistedBy: {
+    type: [mongoose.Schema.Types.ObjectId], // Array of ObjectIds
+    validate: {
+      validator: function (array) {
+        // Check if the array has duplicates
+        return new Set(array.map((id) => id.toString())).size === array.length;
+      },
+      message: "wishlistedBy array must contain unique user IDs.",
+    },
+  },
   legalClearance: { type: Boolean, default: false },
   availableFrom: { type: Date },
+
   createdAt: {
     type: Date,
     default: currentTime(),
