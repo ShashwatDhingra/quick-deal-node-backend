@@ -323,6 +323,36 @@ class AuthService {
       return getInternalErrorResponse(e.message || "Internal Error");
     }
   }
+  
+  // SAVE FIREBASE TOKEN
+  async saveFirebaseToken(email, firebaseToken){
+    try{
+      const user = await userModel.findOne({ email });
+
+      if (!user) {
+        return getResponse(
+          401,
+          false,
+          "User doesnt exists with this email id",
+          null,
+          "User doesnt exists with this email id"
+        );
+      }
+
+      user.firebaseToken = firebaseToken;
+
+      const isSaved = await user.save();
+
+      if (!isSaved) {
+        return getResponse(400, false, "Something went wrong! Try again");
+      }
+
+      return getResponse(200, true, "Password Changed Successfully");
+
+    }catch(e){
+      return getInternalErrorResponse(e.message || "Internal Error");
+    }
+  }
 }
 
 module.exports = new AuthService();

@@ -1,3 +1,4 @@
+const { response } = require('express');
 const authService = require('../services/auth.service')
 const { sendResponse, getRequiredResponse, getInternalErrorResponse, getResponse } = require('../utils/utils')
 
@@ -153,6 +154,27 @@ class AuthController{
             return sendResponse(res, getInternalErrorResponse(e.message || "An error occurred"))
         }
 
+    }
+
+    // SAVE FIREBASE TOKEN
+    async saveFirebaseToken(req, res){
+        try{
+            const {email, firebaseToken} = req.body;
+
+            if(!email){
+                return sendResponse(res, getRequiredResponse('email'))
+            }
+
+            if(!firebaseToken){
+                return sendResponse(res, getRequiredResponse('firebaseToken'))
+            }
+
+            const response = await authService.saveFirebaseToken(email, firebaseToken);
+
+            return sendResponse(res, response);
+        }catch(e){
+            return sendResponse(res, getInternalErrorResponse(e.message || 'An error occurred'))
+        }
     }
 
 }
