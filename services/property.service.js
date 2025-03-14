@@ -74,7 +74,7 @@ async fetchProperty(page, limit, filters) {
         } else if (typeof value === "string" && !isNaN(Date.parse(value))) {
           filters["filters"][key] = new Date(value);
         } else if (typeof value === "string") {
-          filters["filters"]['propertyType'] = { $regex: value, $options: "i" };
+          filters["filters"][key] = { $regex: value, $options: "i" };
         } else if (typeof value === "number") {
           filters["filters"][key] = { $eq: value };
         }
