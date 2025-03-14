@@ -10,6 +10,8 @@ class LeadServices {
     try {
       const newLead = new leadModel(leadData);
 
+      hitNotification();
+
       await newLead.save();
 
       return getResponse(201, true, "Lead added successfully", newLead);
