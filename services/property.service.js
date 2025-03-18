@@ -54,32 +54,36 @@ async fetchProperty(page, limit, filters) {
       );
     }
 
-    if (filters["filters"]) {
-      Object.keys(filters["filters"]).forEach((key) => {
-        let value = filters["filters"][key];
+   if (filters["filters"]) {
+  Object.keys(filters["filters"]).forEach((key) => {
+    let value = filters["filters"][key];
 
-        // Handle array values for multi-filter conditions
-        if (Array.isArray(value)) {
-          filters["filters"][key] = { $in: value };
-        } else if (typeof value === "object" && value !== null) {
-          Object.keys(value).forEach((operator) => {
-            if (
-              ["gte", "lte", "gt", "lt"].includes(operator) &&
-              !isNaN(Date.parse(value[operator]))
-            ) {
-              value[`$${operator}`] = new Date(value[operator]);
-              delete value[operator];
-            }
-          });
-        } else if (typeof value === "string" && !isNaN(Date.parse(value))) {
-          filters["filters"][key] = new Date(value);
-        } else if (typeof value === "string") {
-          filters["filters"][key] = { $regex: value, $options: "i" };
-        } else if (typeof value === "number") {
-          filters["filters"][key] = { $eq: value };
+    // Handle nested fields dynamically
+    if (key.includes('.')) {
+      filters["filters"][key] = value;
+    }
+
+    if (Array.isArray(value)) {
+      filters["filters"][key] = { $in: value };
+    } else if (typeof value === "object" && value !== null) {
+      Object.keys(value).forEach((operator) => {
+        if (
+          ["gte", "lte", "gt", "lt"].includes(operator) &&
+          !isNaN(Date.parse(value[operator]))
+        ) {
+          value[`$${operator}`] = new Date(value[operator]);
+          delete value[operator];
         }
       });
+    } else if (typeof value === "string" && !isNaN(Date.parse(value))) {
+      filters["filters"][key] = new Date(value);
+    } else if (typeof value === "string") {
+      filters["filters"][key] = { $regex: value, $options: "i" };
+    } else if (typeof value === "number") {
+      filters["filters"][key] = { $eq: value };
     }
+  });
+}
 
     log(filters["filters"]);
 
